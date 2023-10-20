@@ -1,9 +1,10 @@
 import React from 'react';
+import WelcomePage from '@/components/WelcomePage';
 
 const HomePage = () => {
 
     return (
-        <h1>Welcome to Kolade</h1>
+        <WelcomePage />
     )
 }
 
