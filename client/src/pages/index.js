@@ -2,6 +2,7 @@ import React from 'react';
 import WelcomePage from '@/components/WelcomePage';
 import UserRegistration from '@/components/UserRegistration';
 import UserProfile from '@/components/UserProfile';
+import UsersPage from '@/components/UsersPage';
 
 const HomePage = () => {
 
@@ -10,6 +11,7 @@ const HomePage = () => {
             <WelcomePage />
             <UserRegistration />
             <UserProfile />
+            <UsersPage />
         </>
         
     )
