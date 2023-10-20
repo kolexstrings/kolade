@@ -1,6 +1,7 @@
 import React from 'react';
 import WelcomePage from '@/components/WelcomePage';
 import UserRegistration from '@/components/UserRegistration';
+import UserProfile from '@/components/UserProfile';
 
 const HomePage = () => {
 
@@ -8,6 +9,7 @@ const HomePage = () => {
         <>
             <WelcomePage />
             <UserRegistration />
+            <UserProfile />
         </>
         
     )
