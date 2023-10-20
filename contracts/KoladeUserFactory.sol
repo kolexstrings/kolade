@@ -5,13 +5,13 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "./KoladeUser.sol";
 import "./KoladeToken.sol";
 
-contract SocialMeUserFactory is Ownable {
+contract KoladeUserFactory is Ownable {
     address[] public users;
     KoladeToken public tokenContract;
 
     event UserCreated(address indexed user);
 
-    constructor(address _tokenContractAddress) {
+    constructor(address _tokenContractAddress) Ownable(msg.sender) {
         tokenContract = KoladeToken(_tokenContractAddress);
     }
 

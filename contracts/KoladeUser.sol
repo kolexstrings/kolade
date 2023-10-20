@@ -24,7 +24,7 @@ contract KoladeUser is Ownable {
     event PostCreated(address indexed author, uint256 postId);
     event PostLiked(address indexed user, uint256 postId);
 
-    constructor(string memory _name, address _tokenContractAddress) {
+    constructor(string memory _name, address _tokenContractAddress) Ownable(msg.sender) {
         name = _name;
         koladeToken = msg.sender;
         tokenContract = IERC20(_tokenContractAddress);

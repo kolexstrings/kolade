@@ -1,8 +1,9 @@
 const KoladeToken = artifacts.require("KoladeToken");
-const KoladeFactory = artifacts.require("KoladeFactory");
+const KoladeUserFactory = artifacts.require("KoladeUserFactory");
 
-module.exports = function(deployer) {
-  deployer.deploy(KoladeToken);
-  deployer.link(KoladeToken, KoladeFactory);
-  deployer.deploy(KoladeFactory);
+module.exports = async function (deployer) {
+  await deployer.deploy(KoladeToken);
+  const koladeTokenInstance = await KoladeToken.deployed();
+
+  await deployer.deploy(KoladeUserFactory, koladeTokenInstance.address);
 };
