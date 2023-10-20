@@ -13,7 +13,7 @@ import {
 
 const UserRegistration = () => {
   const [userName, setUserName] = useState('');
-  const [tokenAmount, setTokenAmount] = useState(0);
+  const [tokenPurchaseAmount, setTokenPurchaseAmount] = useState(0);
   const [profilePicture, setProfilePicture] = useState(null);
 
   const handleUserNameChange = (e) => {
@@ -21,17 +21,25 @@ const UserRegistration = () => {
   };
 
   const handleTokenAmountChange = (e) => {
-    setTokenAmount(e.target.value);
+    setTokenPurchaseAmount(e.target.value);
   };
 
   const handleProfilePictureChange = (e) => {
-    // Handle profile picture upload or selection
     const file = e.target.files[0];
     setProfilePicture(file);
   };
 
-  const handleSubmit = () => {
-    // Handle the form submission
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+      if(!isConnected) {
+        console.log("please connect to metamask first")
+    } else {
+      await koladeUserFactoryContract.methods.createUser.send(userName, tokenPurchaseAmount)({
+        from: userAccount,
+        value: tokenPurchaseAmount
+      })
+    }
   };
 
   return (

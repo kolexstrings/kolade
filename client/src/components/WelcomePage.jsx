@@ -1,11 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, Center, Heading, Image, Text, Flex } from '@chakra-ui/react';
 import Layout from './Layout';
+import { koladeUserFactoryContract } from '../../factoryInstance';
 
 const WelcomePage = () => {
+    const [userAccount, setUserAccount] = useState('');
+    const [isConnected, setIsConnected] = useState(false);
+    const [userName, setUserName] = useState("");
+    const [tokenPurchaseAmount, setTokenPurchaseAmount] = useState("");
 
-    async function handleRegisterClick() {
-        // Handle the Register button click action
+    useEffect(()=> {
+        if(typeof window.ethereum !== 'undefined') {
+            ethereum.request({ method: 'eth_requestAccounts' })
+            .then((accounts)=> {
+                if(accounts.length > 0) {
+                    setUserAccount(accounts[1]);
+                    setIsConnected(true);
+                } else {
+                    setIsConnected(false);
+                }
+            }). catch((error)=> {
+                console.error('Error connecting to wallet:', error);
+                setIsConnected(false);
+            });
+        };
+        
+    });
+
+    const handleRegisterClick = async () => {
+        //routes to User registration form
     }
 
     async function handleLoginClick() {

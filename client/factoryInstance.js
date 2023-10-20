@@ -1,4 +1,5 @@
 import Web3 from 'web3';
+
 const koladeUserFactoryAddress = '0x98832cCa1CDa43Fed5E7179445aB1D3FcF72AcC4'
 const koladeUserFactoryABI = 
 [
@@ -106,4 +107,13 @@ const koladeUserFactoryABI =
   
 
 const web3 = new Web3(window.ethereum);
+const koladeUserFactoryContract = new web3.eth
+.contract(koladeUserFactoryABI, koladeUserFactoryAddress);
+
+await ethereum.request({ method: 'eth_requestAccounts' });
+
+export { koladeUserFactoryContract };
+
+
+
 

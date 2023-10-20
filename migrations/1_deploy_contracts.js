@@ -11,11 +11,7 @@ module.exports = async function (deployer) {
   await deployer.deploy(KoladeUserFactory, koladeTokenInstance.address);
   const koladeUserFactoryInstance = await KoladeUserFactory.deployed();
   
- 
 
-  console.log("koladeUserFactoryABI: ", koladeUserFactoryABI);  
+  console.log("koladeUserFactoryABI: ", koladeUserFactoryABI);
   console.log("KoladeUserFactory has been successfully depployed to: ", koladeUserFactoryInstance.address);
-
-  fs.writeFileSync('../build/contracts/koladeTokenData.json', JSON.stringify(koladeTokenData, null, 2));
-  fs.writeFileSync('../build/contracts/koladeUserFactoryData.json', JSON.stringify(koladeUserFactoryData, null, 2));
 };

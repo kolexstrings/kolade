@@ -10,8 +10,8 @@ const HomePage = () => {
         <>
             <WelcomePage />
             <UserRegistration />
-            <UserProfile />
-            <UsersPage />
+            {/* <UserProfile />
+            <UsersPage /> */}
         </>
         
     )
