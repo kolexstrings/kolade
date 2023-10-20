@@ -1,35 +1,32 @@
 // SPDX-License-Identifier: MIT
-// Tells the Solidity compiler to compile only from v0.8.13 to v0.9.0
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.0;
 
-import "./ConvertLib.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "./KoladeUser.sol";
+import "./KoladeToken.sol";
 
-// This is just a simple example of a coin-like contract.
-// It is not ERC20 compatible and cannot be expected to talk to other
-// coin/token contracts.
+contract SocialMeUserFactory is Ownable {
+    address[] public users;
+    KoladeToken public tokenContract;
 
-contract MetaCoin {
-	mapping (address => uint) balances;
+    event UserCreated(address indexed user);
 
-	event Transfer(address indexed _from, address indexed _to, uint256 _value);
+    constructor(address _tokenContractAddress) {
+        tokenContract = KoladeToken(_tokenContractAddress);
+    }
 
-	constructor() {
-		balances[tx.origin] = 10000;
-	}
+    function createUser(string memory _name, uint256 etherPayment) public payable {
+        uint256 minimumEtherPayment = 1000 wei;
+        require(msg.value >= minimumEtherPayment, "Insufficient Ether payment");
+        require(etherPayment >= minimumEtherPayment, "Insufficient Ether payment");
 
-	function sendCoin(address receiver, uint amount) public returns(bool sufficient) {
-		if (balances[msg.sender] < amount) return false;
-		balances[msg.sender] -= amount;
-		balances[receiver] += amount;
-		emit Transfer(msg.sender, receiver, amount);
-		return true;
-	}
+        uint256 tokenAmount = etherPayment / 10;
 
-	function getBalanceInEth(address addr) public view returns(uint){
-		return ConvertLib.convert(getBalance(addr),2);
-	}
+        KoladeUser newUser = new KoladeUser(_name, address(tokenContract));
+        users.push(address(newUser));
+        emit UserCreated(address(newUser));
 
-	function getBalance(address addr) public view returns(uint) {
-		return balances[addr];
-	}
+        newUser.setTokenAmount(tokenAmount);
+    }
+
 }
