@@ -10,9 +10,11 @@ import {
   Image,
   Heading,
 } from '@chakra-ui/react';
+import { factoryContract } from '@/utils/web3';
 
-const UserRegistration = () => {
+const RegistrationForm = () => {
   const [userName, setUserName] = useState('');
+  const [userAccount, setUserAccount] = useState('');
   const [tokenPurchaseAmount, setTokenPurchaseAmount] = useState(0);
   const [profilePicture, setProfilePicture] = useState(null);
 
@@ -29,23 +31,41 @@ const UserRegistration = () => {
     setProfilePicture(file);
   };
 
+  const requestAccounts = async () => {
+    if (typeof window.ethereum !== 'undefined') {
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      if(accounts.length <= 1) {
+        setUserAccount(accounts)
+      } else if (accounts.length > 1) {
+        setUserAccount(accounts[0])
+      }
+    } else {
+      throw new Error('Web3 provider not found. Please install MetaMask or use a compatible browser.');
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-      if(!isConnected) {
-        console.log("please connect to metamask first")
-    } else {
-      await koladeUserFactoryContract.methods.createUser.send(userName, tokenPurchaseAmount)({
-        from: userAccount,
-        value: tokenPurchaseAmount
-      })
+    
+    try {
+      await requestAccounts()
+      if(factoryContract) {
+        await factoryContract.methods.createUser(userName, tokenPurchaseAmount).send({
+          from: userAccount, 
+          value: tokenPurchaseAmount
+        });
+      } else {
+        console.error("Factory contract not initiated yet")
+      }
+    } catch(error) {
+      console.error("could not create new user: ", error);
     }
   };
 
   return (
     <Box p={5} bg="white" rounded="lg" shadow="lg">
       <Center>
-        <Image src="/your-default-profile-image.png" alt="Profile" boxSize="100px" />
+        <Image src={profilePicture} alt="Profile" boxSize="100px" />
       </Center>
       <Heading as="h1" size="xl" mt={4} mb={2}>
         User Registration
@@ -67,7 +87,7 @@ const UserRegistration = () => {
           <FormLabel>Worth of Token Purchase Min: 1000 wei</FormLabel>
           <Input
             type="number"
-            value={tokenAmount}
+            value={tokenPurchaseAmount}
             onChange={handleTokenAmountChange}
             placeholder="Enter amount in Wei"
           />
@@ -88,4 +108,4 @@ const UserRegistration = () => {
   );
 };
 
-export default UserRegistration;
+export default RegistrationForm;

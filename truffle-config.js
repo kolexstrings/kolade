@@ -1,6 +1,6 @@
 require('dotenv').config();
 const mnemonic = process.env.MNEMONIC;
-const infuraApi = process.env.INFURA_PROJECT_ID;
+const infuraApi = process.env.INFURA_PROJECT_URL;
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 
 module.exports = {

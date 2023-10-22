@@ -1,6 +1,5 @@
 const KoladeToken = artifacts.require("KoladeToken");
 const KoladeUserFactory = artifacts.require("KoladeUserFactory");
-const fs = require('fs');
 
 module.exports = async function (deployer) {
   await deployer.deploy(KoladeToken);
